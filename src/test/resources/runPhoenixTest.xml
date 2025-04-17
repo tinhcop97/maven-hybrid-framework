@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Phoenix - Automation Test">
+    <parameter name="browser" value="chrome"/>
+    
+    <test name="Login Test">
+        <classes>
+            <class name="com.phoenix.login.Login_01_Valid_Credential"/>
+        </classes>
+    </test>
+    
+    <test name="Shift Management Test">
+        <classes>
+            <class name="com.phoenix.shift.Shift_01_Open_Close_Management"/>
+        </classes>
+    </test>
+</suite>
