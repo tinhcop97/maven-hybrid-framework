@@ -5,11 +5,19 @@ import static io.restassured.RestAssured.given;
 import commons.Constants;
 
 public class AuthAPI {
-    public Response login(String username, String password) {
+
+    public Response login(String retailer, String username, String password) {
         return given()
-            .contentType("application/json")
-            .body(String.format("{\"username\":\"%s\", \"password\":\"%s\"}", username, password))
-            .when()
-            .post(Constants.API_LOGIN_URL);
+                .contentType("application/x-www-form-urlencoded; charset=UTF-8")
+                .header("retailer", retailer)
+                .formParam("provider", "credentials")
+                .formParam("UserName", username)
+                .formParam("Password", password)
+                .formParam("IsManageLogin", "true")
+                .when()
+                .post(Constants.API_LOGIN_URL)
+                .then()
+                .extract()
+                .response();
     }
 }
