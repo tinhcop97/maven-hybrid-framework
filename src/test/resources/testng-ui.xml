@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="UI Test Suite">
+    <parameter name="browser" value="chrome"/>
+    <test name="UI Tests">
+        <classes>
+            <class name="testcases.ui.LoginTest"/>
+        </classes>
+    </test>
+</suite>
