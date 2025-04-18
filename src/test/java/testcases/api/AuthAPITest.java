@@ -11,7 +11,7 @@ public class AuthAPITest extends BaseTest {
     @Test
     public void testLoginSuccess() {
         AuthAPI authAPI = new AuthAPI();
-        Response response = authAPI.login("valid_user", "valid_pass");
+        Response response = authAPI.login("tinhcoinew", "valid_user", "valid_pass");
         
         assertEquals(response.getStatusCode(), 200);
         // Add more assertions as needed

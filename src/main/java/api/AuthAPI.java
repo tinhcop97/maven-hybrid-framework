@@ -5,7 +5,6 @@ import static io.restassured.RestAssured.given;
 import commons.Constants;
 
 public class AuthAPI {
-
     public Response login(String retailer, String username, String password) {
         return given()
                 .contentType("application/x-www-form-urlencoded; charset=UTF-8")

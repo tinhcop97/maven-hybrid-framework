@@ -9,7 +9,7 @@ public class BaseAPI {
 
     public BaseAPI() {
         request = RestAssured.given()
-                .baseUri(ConfigReader.getBaseUrl());
+                .baseUri(ConfigReader.getProperty("baseUrl"));
         // Không nên đặt contentType ở đây vì mỗi API sẽ khác nhau
     }
 }
