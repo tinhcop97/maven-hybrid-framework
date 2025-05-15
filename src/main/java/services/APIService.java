@@ -11,11 +11,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import commons.Constants;
 
 import java.io.IOException;
 
 public class APIService {
-    private static final String BASE_URL = "https://phoenix.kvfnb.vip/api";
+    private static final String BASE_URL = Constants.API_BASE_URL;
     private String bearerToken;
     private String sessionId;
     private int userId;
@@ -24,6 +25,10 @@ public class APIService {
     private int groupId;
     private final String retailerCode;
 
+    public APIService() {
+        this.retailerCode = Constants.DEFAULT_RETAILER;
+    }
+    
     public APIService(String retailerCode) {
         this.retailerCode = retailerCode;
     }
@@ -50,7 +55,7 @@ public class APIService {
 
     public void authenticate(String username, String password) throws IOException {
         HttpClient client = HttpClients.createDefault();
-        HttpPost request = new HttpPost(BASE_URL + "/users/auth-login?format=json");
+        HttpPost request = new HttpPost(Constants.API_LOGIN_URL);
         
         // Set headers
         request.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -79,7 +84,7 @@ public class APIService {
 
     private void getCurrentSession() throws IOException {
         HttpClient client = HttpClients.createDefault();
-        HttpGet request = new HttpGet(BASE_URL + "/retailers/currentsession?format=json");
+        HttpGet request = new HttpGet(Constants.API_CURRENT_SESSION_URL);
         
         // Set headers
         request.setHeader("Authorization", "Bearer " + bearerToken);
@@ -106,14 +111,14 @@ public class APIService {
         }
 
         HttpClient client = HttpClients.createDefault();
-        HttpGet request = new HttpGet(BASE_URL + "/workingshift");
+        HttpGet request = new HttpGet(Constants.API_WORKING_SHIFT_URL);
         
         // Set headers
         request.setHeader("authorization", "Bearer " + bearerToken);
         request.setHeader("branchid", String.valueOf(branchId));
         request.setHeader("content-type", "application/json;charset=UTF-8");
         request.setHeader("retailer", retailerCode);
-        request.setHeader("x-app-name", "web-pos");
+        request.setHeader("x-app-name", Constants.APP_NAME_MHTN);
         request.setHeader("x-branch-id", String.valueOf(branchId));
         request.setHeader("x-retailer-code", retailerCode);
         request.setHeader("x-retailer-id", String.valueOf(retailerId));
@@ -122,14 +127,26 @@ public class APIService {
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
         
+        // Log the exact status code
+        System.out.println("Working shift API response - Status: " + statusCode);
+        
         // 204 means no content (no active shift)
         if (statusCode == 204) {
-            System.out.println("Working shift API response - Status: " + statusCode + " (No active shift)");
+            System.out.println("No active shift (status code 204)");
             return false;
         }
         
         // For 200, check the response body
         String responseBody = getResponseBody(response, "Working Shift");
-        return responseBody != null && !responseBody.trim().isEmpty() && !responseBody.equals("null");
+        System.out.println("Working shift response body: " + responseBody);
+        
+        // Consider empty responses or "null" string as no active shift
+        boolean hasActiveShift = responseBody != null && 
+                                !responseBody.trim().isEmpty() && 
+                                !responseBody.equals("null") &&
+                                !responseBody.equals("{}");
+        
+        System.out.println("Has active shift: " + hasActiveShift);
+        return hasActiveShift;
     }
 }

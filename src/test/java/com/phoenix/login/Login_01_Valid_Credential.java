@@ -1,23 +1,28 @@
 package com.phoenix.login;
 
 import commons.BaseTest;
+import commons.Constants;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pageObjects.LoginPageObject;
+import java.time.Duration;
 
 public class Login_01_Valid_Credential extends BaseTest {
     private LoginPageObject loginPage;
-    private String loginUrl = "https://phoenix.kvfnb.vip/tinhcoinew/pos/#/login";
-    private String retailer = "tinhcoinew"; // Thay thế bằng retailer thực tế
-    private String username = "admin"; // Thay thế bằng username thực tế
-    private String password = "123"; // Thay thế bằng password thực tế
-    
-    @Parameters("browser")
+    private String loginUrl;
+    private String retailer = Constants.DEFAULT_RETAILER;
+    private String username = Constants.DEFAULT_USERNAME;
+    private String password = Constants.DEFAULT_PASSWORD;
+
     @BeforeClass
-    public void beforeClass(String browserName) {
-        super.beforeClass(browserName);
+    public void beforeClass() {
+        driver = getBrowserDriver("chrome");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+        driver.manage().window().maximize();
+        
         loginPage = new LoginPageObject(driver);
+        // Construct login URL dynamically based on configuration
+        loginUrl = Constants.BASE_URL + retailer + "/pos/#/login";
     }
     
     @Test

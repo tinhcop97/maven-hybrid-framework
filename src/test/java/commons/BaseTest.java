@@ -34,7 +34,8 @@ public class BaseTest {
     }
 
     protected WebDriver getBrowserDriver(String browserName) {
-        switch (browserName.toLowerCase()) {
+        browserName = browserName.toLowerCase();
+        switch (browserName) {
             case "firefox":
                 return new FirefoxDriver();
             case "edge":

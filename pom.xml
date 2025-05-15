@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Global variable for dependencies -->
-        <selenium.version>4.1.2</selenium.version>
+        <selenium.version>4.15.0</selenium.version>
         <testng.version>7.5</testng.version>
         <log4j.version>2.17.1</log4j.version>
         <allure.version>2.17.3</allure.version>
@@ -31,6 +31,20 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        
+        <!-- Selenium Support - đảm bảo có đủ dependencies cho WebDriverWait -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-support</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        
+        <!-- Selenium DevTools cho Chrome 136 - chọn phiên bản DevTools gần nhất -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-devtools-v124</artifactId>
             <version>${selenium.version}</version>
         </dependency>
         
@@ -60,12 +74,6 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
             <version>${allure.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-support</artifactId>
-            <version>${selenium.version}</version>
         </dependency>
 
         <dependency>
@@ -142,6 +150,13 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
+        </dependency>
+        
+        <!-- WebDriverManager -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.6.4</version>
         </dependency>
     </dependencies>
 

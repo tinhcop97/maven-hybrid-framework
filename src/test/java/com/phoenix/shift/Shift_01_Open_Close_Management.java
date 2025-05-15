@@ -1,6 +1,7 @@
 package com.phoenix.shift;
 
 import commons.BaseTest;
+import commons.Constants;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Optional;
@@ -11,16 +12,19 @@ import pageObjects.RoomPageObject;
 import pageObjects.ShiftManagementPageObject;
 import services.APIService;
 
+import java.time.Duration;
+
 public class Shift_01_Open_Close_Management extends BaseTest {
     private LoginPageObject loginPage;
     private ShiftManagementPageObject shiftPage;
     private RoomPageObject roomPage;
     private APIService apiService;
-    private String loginUrl = "https://phoenix.kvfnb.vip/tinhcoinew/pos/#/login";
-    private String retailer = "tinhcoinew";
-    private String username = "admin";
-    private String password = "123";
+    private String loginUrl;
+    private String retailer = Constants.DEFAULT_RETAILER;
+    private String username = Constants.DEFAULT_USERNAME;
+    private String password = Constants.DEFAULT_PASSWORD;
     private boolean hasActiveShift;
+
 
     private void logTime(String operation) {
         System.out.println("[TIME] " + operation + ": " + System.currentTimeMillis());
@@ -31,7 +35,9 @@ public class Shift_01_Open_Close_Management extends BaseTest {
     public void beforeClass(@Optional("chrome") String browserName) {
         try {
             logTime("Start beforeClass");
-            super.beforeClass(browserName);
+            driver = getBrowserDriver("chrome");
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+            driver.manage().window().maximize();
             loginPage = new LoginPageObject(driver);
             shiftPage = new ShiftManagementPageObject(driver);
             
@@ -49,10 +55,11 @@ public class Shift_01_Open_Close_Management extends BaseTest {
             
             // Login to UI first
             logTime("Start UI login");
+            loginUrl = Constants.BASE_URL + retailer + "/pos/#/login";
             loginPage.openLoginPage(loginUrl);
             loginPage.loginToSystem(retailer, username, password);
             roomPage = new RoomPageObject(driver);
-            roomPage.waitForLoadingIconToDisappear();
+            roomPage.waitForPageReady();
             logTime("End UI login");
             
             logTime("End beforeClass");
